@@ -56,4 +56,18 @@ for more example I invite to tests data: [click here and check `Renderer` folder
 | Aggregation | [AverageCell](./src/cell/AverageCell.ts) | 12 | `#! AVERAGE item` | Write average formulae for current column and the `item`'s rows.  | [Example](./tests/integration/data/Renderer009-ForEach-Average/) |
 | View Model | [DeleteCell](./src/cell/DeleteCell.ts) | 14 | `#! DELETE pathToVariable` | Delete variable, useful for nested loops.|  [Example](./tests/integration/data/Renderer009-ForEach-Average/)  |
 
-[LICENSE](LICENSE)
+# Supported platforms:
+
+## Node:
+
+| Node version |  8  |  9  |  10 |  11 |  12 |  13 |  14 |
+|--------------|-----|-----|-----|-----|-----|-----|-----|
+| Supported?   | 🟢  | 🟢 | 🟢 |  🟢 | 🟢 |  🟢 | 🟢 |
+
+Discovered in: [#14](https://github.com/Siemienik/xlsx-renderer/issues/14)
+
+## Browsers:
+
+Scheduled to check in issue: [#13](https://github.com/Siemienik/xlsx-renderer/issues/13)
+
+[MIT LICENSE](LICENSE)

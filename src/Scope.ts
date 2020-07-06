@@ -15,6 +15,10 @@ export class Scope {
 
     constructor(public template: Workbook, public output: Workbook, public vm: ViewModel) {}
 
+    public getCurrentTemplateString(): string {
+        return this.getCurrentTemplateValue()?.toString() || '';
+    }
+
     public getCurrentTemplateValue(): CellValue {
         return this.getCurrentTemplateCell().value;
     }
@@ -102,5 +106,9 @@ export class Scope {
 
     public isFinished(): boolean {
         return this.finished;
+    }
+
+    public isOutOfColLimit(): boolean {
+        return this.outputCell.c > 16383;
     }
 }
