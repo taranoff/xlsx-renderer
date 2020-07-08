@@ -41,14 +41,14 @@ export class Scope {
         if (this.frozen) {
             return;
         }
-        const ct = this.templateCell;
-        const wst = this.template.worksheets[ct.ws];
-        const co = this.outputCell;
-        const wso = this.output.worksheets[co.ws];
-        wso.getRow(co.r).height = wst.getRow(ct.r).height;
-        wso.getCell(co.r, co.c).style = wst.getCell(ct.r, ct.c).style;
-        if (wst.getColumn(ct.c).isCustomWidth) {
-            wso.getColumn(co.c).width = wst.getColumn(ct.c).width;
+        const templateCell = this.templateCell;
+        const templateWorksheet = this.template.worksheets[templateCell.ws];
+        const outputCell = this.outputCell;
+        const outputWorksheet = this.output.worksheets[outputCell.ws];
+        outputWorksheet.getRow(outputCell.r).height = templateWorksheet.getRow(templateCell.r).height;
+        outputWorksheet.getCell(outputCell.r, outputCell.c).style = templateWorksheet.getCell(templateCell.r, templateCell.c).style;
+        if (templateWorksheet.getColumn(templateCell.c).isCustomWidth) {
+            outputWorksheet.getColumn(outputCell.c).width = templateWorksheet.getColumn(templateCell.c).width;
         }
     }
 
