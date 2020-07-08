@@ -1,7 +1,8 @@
 import { BaseCell } from './BaseCell';
 import { Scope } from '../Scope';
 import { Cell, ValueType } from 'exceljs';
-
+// @ts-ignore
+import Range from 'exceljs/lib/doc/range';
 /* tslint:disable:variable-name */
 /**
  * Pattern: `#! FOR_EACH [TARGET] [SOURCE]`
@@ -73,6 +74,28 @@ export class ForEachCell extends BaseCell {
                         [],
                     );
                 }
+
+                // shift merged cells here
+                const shiftByR =  __end.r-__start.r;
+                const outputWorksheet = scope.output.worksheets[scope.outputCell.ws];
+                // @ts-ignore
+                const merges = outputWorksheet._merges;
+                // @ts-ignore
+                outputWorksheet._merges = Object.keys(merges).reduce((val, key) => {
+                    if (merges[key].top > __end.r) {
+                        let { top, left, bottom, right, sheetName } = merges[key].model;
+                        top+=shiftByR;
+                        bottom+=shiftByR;
+                        // @ts-ignore
+                        const newRange = new Range(top, left, bottom, right, sheetName);
+                        // @ts-ignore
+                        val[newRange.tl] = newRange;
+                    } else {
+                        // @ts-ignore
+                        val[key] = merges[key];
+                    }
+                    return val;
+                }, {});
             }
         }
 

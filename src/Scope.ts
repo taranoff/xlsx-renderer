@@ -57,40 +57,17 @@ export class Scope {
         const templateCell = templateWorksheet.getCell(this.templateCell.r, this.templateCell.c);
 
         const outputWorksheet = this.output.worksheets[this.outputCell.ws];
-        const outputCell = outputWorksheet.getCell(this.outputCell.r, this.outputCell.c).model.address;
-        // console.log('templateCell.model.master', templateCell.model.master);
-        // if (templateCell.model.master && templateCell.model.master !== templateCell.address) {
-        if (templateCell.isMerged) {
-            const masterAddress = templateCell.model.master || (templateCell.master && templateCell.master.address);
-            if (masterAddress && masterAddress !== templateCell.address) {
-                // const range = `${this.masters[templateCell.model.master] || templateCell.model.master}:${current}`;
-                const range = `${this.masters[masterAddress] || masterAddress}:${outputCell}`;
-                // console.log('applying merge', range);
-                try {
-                    const rangeStart = outputWorksheet.getCell(masterAddress);
-                    const rangeEnd = outputWorksheet.getCell(templateCell.address);
-                    console.log('=====================');
-                    // @ts-ignore
-                    Object.keys(templateWorksheet._merges).forEach(k => {
 
-                        // @ts-ignore
-                        console.log('templateWorksheet merge:', templateWorksheet._merges[k].shortRange);
-                    });
-
-                    // @ts-ignore
-                    Object.keys(outputWorksheet._merges).forEach(k => {
-                        // @ts-ignore
-                        console.log('outputWorksheet merge:', outputWorksheet._merges[k].shortRange);
-                    });
-
-                    outputWorksheet.unMergeCells(range);
-                    outputWorksheet.mergeCells(range);
-                } catch (e) {
-                    console.error(e);
-                }
-            } else {
-                this.masters[templateCell.address] = outputCell;
-            }
+        if (templateCell.isMerged && templateCell.address === (templateCell.master && templateCell.master.address)) {
+            // @ts-ignore
+            let { top, left, bottom, right } = templateWorksheet._merges[templateCell.master.address];
+            const verticalShift = this.outputCell.r - top;
+            top += verticalShift;
+            bottom += verticalShift;
+            // @ts-ignore
+            const range = new Range(top, left, bottom, right).shortRange;
+            outputWorksheet.unMergeCells(range);
+            outputWorksheet.mergeCells(range);
         }
     }
 
@@ -108,36 +85,6 @@ export class Scope {
         }
 
         if (this.frozen) {
-            //TODO: node_modules/exceljs/index.d.ts:1070
-            // Known Issue: If a splice causes any merged cells to move, the results may be unpredictable
-            const outputWorksheet = this.output.worksheets[this.outputCell.ws];
-            const nextRowIndex = this.outputCell.r + 1;
-            // find ranges to shift
-
-            // @ts-ignore
-            const merges = outputWorksheet._merges;
-            // @ts-ignore
-            outputWorksheet._merges = Object.keys(merges).reduce((val, key) => {
-                if (merges[key].top > this.outputCell.r) {
-                    console.log('shift merge', merges[key].range,merges[key]);
-                    let { top, left, bottom, right, sheetName } = merges[key].model;
-                    top--;
-                    bottom--;
-                    // @ts-ignore
-                    const newRange = new Range(top, left, bottom, right, sheetName);
-                    console.log('newRange', newRange.range,newRange);
-                    // @ts-ignore
-                    val[newRange.tl] = newRange;
-                }
-                else{
-                    // @ts-ignore
-                    val[key] = merges[key];
-                }
-                return val;
-            }, {});
-
-            //
-            outputWorksheet.spliceRows(nextRowIndex, 1); // todo refactoring
             this.outputCell = Object.freeze({ ...this.outputCell, c: 1 });
         } else {
             this.outputCell = Object.freeze({ ...this.outputCell, r: this.outputCell.r + 1, c: 1 });
