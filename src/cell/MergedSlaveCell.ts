@@ -10,6 +10,7 @@ export class MergedSlaveCell extends BaseCell {
      * @returns {boolean}
      */
     public static match(cell: Cell): boolean {
+        return false;
         return cell && cell.isMerged && cell.master && cell.master.address !== cell.address;
     }
 
@@ -19,7 +20,7 @@ export class MergedSlaveCell extends BaseCell {
      * @returns {NormalCell}
      */
     public apply(scope: Scope): MergedSlaveCell {
-        // super.apply(scope);
+        scope.applyMerge();
 
         scope.incrementCol();
 

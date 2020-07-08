@@ -26,8 +26,24 @@ export /* abstract */ class BaseCell {
         if (scope.isOutOfColLimit()) {
             scope.finish(); // todo important: spec test
         }
+        const templateCell = scope.template.worksheets[scope.templateCell.ws].getCell(scope.templateCell.r,scope.templateCell.c)
+        if (templateCell && templateCell.isMerged && templateCell.master && templateCell.master.address !== templateCell.address)
+        {
+            // this is a MergeSlaveCell
+            scope.applyMerge();
+            return this;
+        }
+
         scope.setCurrentOutputValue(scope.getCurrentTemplateValue());
         scope.applyStyles();
+        // console.log(
+        //     'applying merge for outputCell',
+        //     scope.outputCell,
+        //     'templateCell',
+        //     scope.templateCell,
+        //     'masters',
+        //     scope.masters,
+        // );
         scope.applyMerge();
 
         return this;
