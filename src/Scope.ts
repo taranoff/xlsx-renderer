@@ -46,7 +46,10 @@ export class Scope {
         const outputCell = this.outputCell;
         const outputWorksheet = this.output.worksheets[outputCell.ws];
         outputWorksheet.getRow(outputCell.r).height = templateWorksheet.getRow(templateCell.r).height;
-        outputWorksheet.getCell(outputCell.r, outputCell.c).style = templateWorksheet.getCell(templateCell.r, templateCell.c).style;
+        outputWorksheet.getCell(outputCell.r, outputCell.c).style = templateWorksheet.getCell(
+            templateCell.r,
+            templateCell.c,
+        ).style;
         if (templateWorksheet.getColumn(templateCell.c).isCustomWidth) {
             outputWorksheet.getColumn(outputCell.c).width = templateWorksheet.getColumn(templateCell.c).width;
         }

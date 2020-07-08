@@ -26,9 +26,16 @@ export /* abstract */ class BaseCell {
         if (scope.isOutOfColLimit()) {
             scope.finish(); // todo important: spec test
         }
-        const templateCell = scope.template.worksheets[scope.templateCell.ws].getCell(scope.templateCell.r,scope.templateCell.c)
-        if (templateCell && templateCell.isMerged && templateCell.master && templateCell.master.address !== templateCell.address)
-        {
+        const templateCell = scope.template.worksheets[scope.templateCell.ws].getCell(
+            scope.templateCell.r,
+            scope.templateCell.c,
+        );
+        if (
+            templateCell &&
+            templateCell.isMerged &&
+            templateCell.master &&
+            templateCell.master.address !== templateCell.address
+        ) {
             // this is a MergeSlaveCell
             scope.applyMerge();
             return this;

@@ -76,7 +76,7 @@ export class ForEachCell extends BaseCell {
                 }
 
                 // shift merged cells here
-                const shiftByR =  __end.r-__start.r;
+                const shiftByR = __end.r - __start.r;
                 const outputWorksheet = scope.output.worksheets[scope.outputCell.ws];
                 // @ts-ignore
                 const merges = outputWorksheet._merges;
@@ -84,8 +84,8 @@ export class ForEachCell extends BaseCell {
                 outputWorksheet._merges = Object.keys(merges).reduce((val, key) => {
                     if (merges[key].top > __end.r) {
                         let { top, left, bottom, right, sheetName } = merges[key].model;
-                        top+=shiftByR;
-                        bottom+=shiftByR;
+                        top += shiftByR;
+                        bottom += shiftByR;
                         // @ts-ignore
                         const newRange = new Range(top, left, bottom, right, sheetName);
                         // @ts-ignore
