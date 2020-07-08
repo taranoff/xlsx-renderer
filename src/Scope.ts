@@ -63,7 +63,9 @@ export class Scope {
 
         if (templateCell.isMerged && templateCell.address === (templateCell.master && templateCell.master.address)) {
             // @ts-ignore
-            let { top, left, bottom, right } = templateWorksheet._merges[templateCell.master.address];
+            let { top, bottom } = templateWorksheet._merges[templateCell.master.address];
+            // @ts-ignore
+            const { left, right } = templateWorksheet._merges[templateCell.master.address];
             const verticalShift = this.outputCell.r - top;
             top += verticalShift;
             bottom += verticalShift;

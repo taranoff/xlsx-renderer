@@ -83,7 +83,8 @@ export class ForEachCell extends BaseCell {
                 // @ts-ignore
                 outputWorksheet._merges = Object.keys(merges).reduce((val, key) => {
                     if (merges[key].top > __end.r) {
-                        let { top, left, bottom, right, sheetName } = merges[key].model;
+                        let { top, bottom } = merges[key].model;
+                        const { left, right, sheetName } = merges[key].model;
                         top += shiftByR;
                         bottom += shiftByR;
                         // @ts-ignore
