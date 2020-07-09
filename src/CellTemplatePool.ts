@@ -15,11 +15,9 @@ import { DumpColsCell } from './cell/DumpColsCell';
 import { WsNameCell } from './cell/WsNameCell';
 import { HyperlinkCell } from './cell/HyperlinkCell';
 import { FormulaCell } from './cell/FormulaCell';
-import { MergedSlaveCell } from './cell/MergedSlaveCell';
 
 export class CellTemplatePool {
     protected cells: CellType[] = [
-        MergedSlaveCell,
         NormalCell,
         EndRowCell,
         VariableCell,
